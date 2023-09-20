@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "rrODCrZC7AI3rEpqZ19WJIlizCGdF5Yg5Z3apRZHAJH+TZA4UuLMr4KPVpQo466hf9CDF07BHYzlCutl2BQKVg==",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\ClientTestOS\\ClientTester\\ClientTester.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mythi\\.nuget\\packages\\fsharp.core\\7.0.400\\fsharp.core.7.0.400.nupkg.sha512"
+  ],
+  "logs": []
+}
