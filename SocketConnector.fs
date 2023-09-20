@@ -2,7 +2,7 @@
 
 open System.Net
 open System.Net.Sockets
-open System.Net.Sockets
+
 
 [<Literal>]
 let REMOTE_IP = "192.168.0.143"
