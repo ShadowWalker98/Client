@@ -6,8 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="InputHandler.fs" />
+        <Compile Include="SocketConnector.fs" />
         <Compile Include="Program.fs"/>
-        <Compile Include="InputTester.fs" />
     </ItemGroup>
 
 </Project>
