@@ -1,5 +1,6 @@
 ﻿module ClientTester.SocketConnector
 
+open System
 open System.Net
 open System.Net.Sockets
 open ClientTester.InputHandler
@@ -11,7 +12,8 @@ let REMOTE_IP = "192.168.0.143"
 let LOCAL_IP = "192.168.0.164"
 
 let sendMessage (clientSocket : Socket) (message: string) : unit =
-   let messageBytes = System.Text.Encoding.ASCII.GetBytes(message)
+   let messageBytes = System.Text.Encoding.ASCII.GetBytes(message.Replace(char(7), char(21)))
+   printfn $"%c{char(7)}"
    let bytesSentResponse = clientSocket.Send(messageBytes)
    printfn $"Number of bytes sent: %d{bytesSentResponse}"
    
@@ -28,8 +30,8 @@ let serverConnectHandshake (clientSocket : Socket): bool =
 
 let socketSetup : Socket =
    let clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
-   let endPoint = IPEndPoint(IPAddress.Parse(LOCAL_IP), 3314)
-   let remoteEndPoint = IPEndPoint(IPAddress.Parse(REMOTE_IP), 1234)
+   let endPoint = IPEndPoint(IPAddress.Loopback, 3314)
+   let remoteEndPoint = IPEndPoint(IPAddress.Loopback, 1234)
    clientSocket.Bind(endPoint)
    clientSocket.Connect(remoteEndPoint)
    printfn $"Is it connected to the remote endpoint?: %s{clientSocket.Connected.ToString()}"
@@ -50,4 +52,6 @@ let socketHandler =
    while closeConnection = false do
       command <- inputHandler operationPrompt
       sendMessage clientSocket command
+      let message = receiveMessage clientSocket
+      printfn "End of loop"
       
