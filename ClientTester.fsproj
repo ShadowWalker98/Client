@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Constants.fs" />
         <Compile Include="InputHandler.fs" />
         <Compile Include="SocketConnector.fs" />
         <Compile Include="Program.fs"/>

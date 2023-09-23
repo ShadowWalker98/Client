@@ -4,13 +4,25 @@ open System
 open System.Net
 open System.Net.Sockets
 open ClientTester.InputHandler
+open ClientTester.Constants
 
-[<Literal>]
-let REMOTE_IP = "192.168.0.143"
-
-[<Literal>]
-let LOCAL_IP = "192.168.0.164"
-
+let responseParser (response : string) : unit =
+   if response.Equals(INCORRECT_OPERATION) then
+      printfn $"%s{INCORRECT_OPERATION_MESSAGE}"
+   elif response.Equals(INPUTS_LESS_THAN_TWO) then
+      printfn $"%s{INPUTS_LESS_THAN_TWO_MESSAGE}"
+   elif response.Equals(INPUTS_MORE_THAN_FOUR) then
+      printfn $"%s{INPUTS_MORE_THAN_FOUR_MESSAGE}"
+   elif response.Equals(INPUT_NON_NUMBER) then
+      printfn $"%s{INPUT_NON_NUMBER_MESSAGE}"
+   elif response.Equals(EXIT_CODE) then
+      printfn $"%s{EXIT_CODE_MESSAGE}"
+   else
+      printfn $"%s{response}"
+      
+let exitChecker (response : string) : bool =
+   response.Equals(EXIT_CODE)
+   
 let sendMessage (clientSocket : Socket) (message: string) : unit =
    let messageBytes = System.Text.Encoding.ASCII.GetBytes(message.Replace(char(7), char(21)))
    printfn $"%c{char(7)}"
@@ -20,7 +32,6 @@ let sendMessage (clientSocket : Socket) (message: string) : unit =
 let receiveMessage (clientSocket : Socket) : string =
    let bytesResponse = [|for i in 0..256 -> byte(i)|]
    let responseBytes = clientSocket.Receive(bytesResponse)
-   printfn $"Message from server: %s{System.Text.Encoding.ASCII.GetString bytesResponse[0 .. responseBytes - 1]}"
    let messageFromServer = System.Text.Encoding.ASCII.GetString bytesResponse[0 .. responseBytes - 1]
    messageFromServer
    
@@ -52,6 +63,10 @@ let socketHandler =
    while closeConnection = false do
       command <- inputHandler operationPrompt
       sendMessage clientSocket command
-      let message = receiveMessage clientSocket
-      printfn "End of loop"
-      
+      let response = receiveMessage clientSocket
+      responseParser response
+      if exitChecker response then
+         closeConnection <- true
+   
+   // TODO: close connection and cleanup
+   
