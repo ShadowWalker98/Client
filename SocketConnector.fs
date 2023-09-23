@@ -25,9 +25,8 @@ let exitChecker (response : string) : bool =
    
 let sendMessage (clientSocket : Socket) (message: string) : unit =
    let messageBytes = System.Text.Encoding.ASCII.GetBytes(message.Replace(char(7), char(21)))
-   printfn $"%c{char(7)}"
    let bytesSentResponse = clientSocket.Send(messageBytes)
-   printfn $"Number of bytes sent: %d{bytesSentResponse}"
+   ()
    
 let receiveMessage (clientSocket : Socket) : string =
    let bytesResponse = [|for i in 0..256 -> byte(i)|]
@@ -61,12 +60,13 @@ let socketHandler =
    let mutable closeConnection : bool = false
    let mutable command = ""
    while closeConnection = false do
-      command <- inputHandler operationPrompt
-      sendMessage clientSocket command
-      let response = receiveMessage clientSocket
-      responseParser response
-      if exitChecker response then
-         closeConnection <- true
+       command <- inputHandler operationPrompt
+       sendMessage clientSocket command
+       let response = receiveMessage clientSocket
+       responseParser response
+       if exitChecker response then
+          closeConnection <- true
    
-   // TODO: close connection and cleanup
+   clientSocket.Shutdown(SocketShutdown.Both)
+   clientSocket.Close()
    
