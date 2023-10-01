@@ -1,7 +1,7 @@
 ﻿module ClientTester.Constants
 
 [<Literal>]
-let REMOTE_IP = "192.168.0.143"
+let REMOTE_IP = "192.168.0.164"
 
 [<Literal>]
 let LOCAL_IP = "192.168.0.164"
@@ -20,6 +20,9 @@ let INPUT_NON_NUMBER = "-4"
 
 [<Literal>]
 let EXIT_CODE = "-5"
+
+[<Literal>]
+let TERMINATION_CODE = "-6"
 
 [<Literal>]
 let INCORRECT_OPERATION_MESSAGE = "Incorrect operation command."

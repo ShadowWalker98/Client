@@ -21,7 +21,7 @@ let responseParser (response : string) : unit =
       printfn $"%s{response}"
       
 let exitChecker (response : string) : bool =
-   response.Equals(EXIT_CODE)
+   response.Equals(EXIT_CODE) || response.Equals(TERMINATION_CODE)
    
 let sendMessage (clientSocket : Socket) (message: string) : unit =
    let messageBytes = System.Text.Encoding.ASCII.GetBytes(message.Replace(char(7), char(21)))
@@ -40,8 +40,8 @@ let serverConnectHandshake (clientSocket : Socket): bool =
 
 let socketSetup : Socket =
    let clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
-   let endPoint = IPEndPoint(IPAddress.Loopback, 3314)
-   let remoteEndPoint = IPEndPoint(IPAddress.Loopback, 1234)
+   let endPoint = IPEndPoint(IPAddress.Parse(LOCAL_IP), 3314)
+   let remoteEndPoint = IPEndPoint(IPAddress.Parse(REMOTE_IP), 1234)
    clientSocket.Bind(endPoint)
    clientSocket.Connect(remoteEndPoint)
    printfn $"Is it connected to the remote endpoint?: %s{clientSocket.Connected.ToString()}"
